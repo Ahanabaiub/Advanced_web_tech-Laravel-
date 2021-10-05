@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,3 +27,10 @@ Route::get('/product/list',[ProductController::class,'list'])->name('product.lis
 Route::get('/product/edit/{id}',[ProductController::class,'edit']);
 Route::post('/product/edit',[ProductController::class,'editSubmit'])->name('product.edit');
 Route::get('/product/delete/{id}',[ProductController::class,'delete']);
+Route::get('/product/cart/{id}',[ProductController::class,'addToCart']);
+Route::get('/product/mycart',[ProductController::class,'viewMyCart']);
+Route::get('/product/session',[ProductController::class,'viewSession']);
+
+//login
+Route::get('/login', [LoginController::class,'login'])->name('login');
+Route::post('/login', [LoginController::class,'validateLogin']);

@@ -5,11 +5,13 @@
     </head>
     <body>
         @include('inc.topnav')
+       <div class="container">
         <div>
-            @yield('test')
-        </div>
-        <div>
-            @yield('content')
-        </div>
+                @yield('test')
+            </div>
+            <div>
+                @yield('content')
+            </div>
+       </div>
     </body>
 </html>

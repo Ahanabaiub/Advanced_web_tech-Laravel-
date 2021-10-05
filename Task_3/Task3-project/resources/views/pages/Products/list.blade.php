@@ -18,8 +18,15 @@
                 <td>
                     <a href="/product/edit/{{$p->id}}" class="btn btn-success">Edit</a>
                     <a href="/product/delete/{{$p->id}}" class="btn btn-danger">Delete</a>
+                    <a href="/product/cart/{{$p->id}}" class="btn btn-info">Add To Cart</a>
                 </td>
             </tr>
         @endforeach
     </table>
 @endsection
+
+<?php 
+    if(isset($_SESSION["cart"])){
+        echo "session set";
+    }
+?>
