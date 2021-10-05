@@ -37,7 +37,7 @@ class ProductController extends Controller
         $var->save();
 
 
-        return "OK";  
+        return redirect()->route('product.list');  
 
     }
     public function list(){

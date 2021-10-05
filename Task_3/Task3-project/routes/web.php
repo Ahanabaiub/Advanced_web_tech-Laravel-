@@ -15,10 +15,9 @@ use App\Http\Controllers\ProductController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
+
+Route::get('/',[ProductController::class,'list'])->name('home');
 
 //Product routes
 Route::get('/product/create',[ProductController::class,'create'])->name('product.create');
