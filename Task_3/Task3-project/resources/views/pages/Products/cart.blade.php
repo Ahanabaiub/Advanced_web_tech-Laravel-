@@ -17,4 +17,5 @@
             </tr>
         @endforeach
     </table>
+    <a href="" class="btn btn-info">Check Out</a>
 @endsection

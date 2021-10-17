@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,3 +35,7 @@ Route::get('/product/session',[ProductController::class,'viewSession']);
 //login
 Route::get('/login', [LoginController::class,'login'])->name('login');
 Route::post('/login', [LoginController::class,'validateLogin']);
+
+
+//Order
+Route::get('/placeOrder', [OrderController::class,'makeOrder']);
