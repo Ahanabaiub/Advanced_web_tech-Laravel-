@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Alluser;
 use App\Models\Customer;
+use App\Models\Order;
 
 class customerController extends Controller
 {
@@ -43,6 +44,7 @@ class customerController extends Controller
         $c->name=$req->name;
         $c->address=$req->address;
         $c->phone=$req->phone;
+        $c->status=$req->status;
         $c->updated_at = date("Y-m-d H:i:s");
         //$c->user->email = $req->email;
         //$c->user->username = $req->username;
@@ -107,6 +109,7 @@ class customerController extends Controller
         $c = new Customer();
         $c->name=$req->name;
         $c->userId=$user->id;
+        $c->status='active';
         $c->address=$req->address;
         $c->phone=$req->phone;
 
@@ -114,4 +117,32 @@ class customerController extends Controller
 
         return redirect()->route('customer.index');
     }
+
+    public function search(Request $req){
+
+        $c = Customer::where('created_at','like',"%{$req->src}%")->
+        orWhere('name','like',"%{$req->src}%")->
+        orWhere('address','like',"%{$req->src}%")->
+        get();
+        //echo $req->src;
+        return view('pages.Customers.allcustomer')->with('customers',$c);
+
+    }
+
+    public function history(Request $req){
+
+        $o = Order::where('customerId',$req->id)->get();
+        $c = Customer::where('id',$req->id)->first();
+        return view('pages.Customers.history')->with('orders',$o)->
+        with('c',$c);
+
+    }
+
+    public function block(Request $req){
+        $c = Customer::where('id',$req->id)->first();
+        $c->status='block';
+        $c->save();
+        return redirect()->route('customer.index');
+    }
+
 }

@@ -46,6 +46,13 @@
             @enderror
         </div>
         <div class="col-md-4 form-group">
+            <span>Status</span>
+            <input type="text" name="status" value="{{$customer->status}}"class="form-control">
+            @error('status')
+                <span class="text-danger">{{$message}}</span>
+            @enderror
+        </div>
+        <div class="col-md-4 form-group">
             <span>User Type</span>
             <input type="text" name="type" value="{{$customer->user->type}}" class="form-control">
             @error('type')

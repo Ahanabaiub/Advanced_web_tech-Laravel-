@@ -4,6 +4,15 @@
   
    <a class="btn btn-info" href="{{route('product.create')}}">Create</a>
    <h2>All Product</h2>
+   <form action="{{route('product.search')}}" method="post">
+        {{csrf_field()}}
+       <table>
+           <tr>
+               <td><input type="text" name="src"></td>
+               <td><input type="submit" value="Search"></td>
+           </tr>
+       </table>
+   </form>
     <table class="table table-borded">
         <tr>
             <th>Image</th>

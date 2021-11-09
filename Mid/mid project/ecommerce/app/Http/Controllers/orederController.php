@@ -24,4 +24,27 @@ class orederController extends Controller
         return view('pages.Orders.details')->with('ods',$c);
         
     }
+
+    public function cancell(Request $req){
+
+        $c = Order::where("id",$req->id)->first();
+
+        $c->status = "Cancelled";
+
+        $c->save();
+        
+        return redirect()->route('order.index');
+        
+    }
+
+    
+    public function search(Request $req){
+
+        $c = Order::where('created_at','like',"%{$req->src}%")->
+        orWhere('status','like',"%{$req->src}%")
+        ->get();
+        //echo $req->src;
+        return view('pages.Orders.list')->with('orders',$c);
+
+    }
 }

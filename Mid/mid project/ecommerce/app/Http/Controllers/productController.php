@@ -27,7 +27,7 @@ class productController extends Controller
     public function save(Request $req){
 
         $validate = $req->validate([
-            'name'=>'required|min:4|max:10',
+            'name'=>'required|min:4|max:100',
             'unitPrice'=>'required',
             'details'=>'required|min:5|max:15',
             'quantity'=>'required',
@@ -38,10 +38,12 @@ class productController extends Controller
           
         ]);
         $p = new Product();
-        $p->name=$req->username;
+        $p->name=$req->name;
         $p->unitPrice=$req->unitPrice;
         $p->details=$req->details;
-        $p->categoryId=$req->categoryId;
+        $p->quantity=$req->quantity;
+        $p->image=$req->image;
+        $p->catagoryId=$req->catagoryId;
 
         $p->save();
 
@@ -57,7 +59,7 @@ class productController extends Controller
 
         foreach($totalOrdered as $o)
         {
-            $orders[]=$o->productId;
+            $orders[]=$o->orderId;
         }
 
         $ordersU = array_unique($orders);
@@ -75,13 +77,22 @@ class productController extends Controller
         // echo $sold." ".$totalPrice;
 
         // echo $AllOrders;
-        echo json_encode($orders);
+        //echo json_encode($orders);
 
-         echo json_encode($ordersU);
+         //echo json_encode($ordersU);
 
 
-        // return view('pages.Products.details')->with("orders",$orders)
-        // ->with("AllOrders",$AllOrders)->with("sold",$sold)
-        // ->with("total",$totalPrice);
+        return view('pages.Products.details')->with("orders",$orders)
+        ->with("AllOrders",$AllOrders)->with("sold",$sold)
+        ->with("total",$totalPrice);
+    }
+
+
+    public function search(Request $req){
+
+        $p = Product::where('name','like',"%{$req->src}%")->get();
+        //echo $req->src;
+        return view('pages.Products.list')->with('products',$p);
+
     }
 }
