@@ -12,7 +12,14 @@ class categoryController extends Controller
 
         $c = Category::all();
         
-        return view('pages.Categories.allCategoy')->with('categories',$c);
+        return $c;
+        
+    }
+     public function count(){
+
+        $c = Category::all()->count();
+        
+        return $c;
         
     }
 

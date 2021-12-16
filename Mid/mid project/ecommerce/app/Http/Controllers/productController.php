@@ -6,16 +6,89 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\OrderDetail;
 use App\Models\Order;
+use \stdClass;
 
 class productController extends Controller
 {
     //
 
-    public function index(){
+    public function getAll(){
         $p = Product::all();
         
-        return view('pages.Products.list')->with('products',$p);
+        return $p;
         
+    }
+
+    public function allCount(){
+        $p = Product::all()->count();
+        
+        return $p;
+    }
+
+        function cmp($a, $b) {
+             return strcmp($a->id, $b->id);
+        }
+
+    public function topSold(){
+
+    
+
+        $orders = OrderDetail::all('productId','productQuantity');
+         $pid = Product::all('id');
+        $count = 0;
+
+        $torders = [];
+
+        foreach($pid as $p){
+            $torders[$p->id]=0;
+        }
+
+        foreach($orders as $o){
+            
+                $torders[$o->productId]+=$o->productQuantity;
+          
+        }
+
+        //usort($torders, function($a,$b){return strcmp($a,$b);});
+
+        //$d2o = array_map('data2Object', $torders);
+
+        $torders_coll = collect($torders);
+        $sorted = $torders_coll->sortDesc();
+
+        
+
+         $res = [];
+
+         
+
+         $k =  array_keys($sorted->toArray());
+
+         
+        foreach($k as $t){
+
+            if($count>=3)
+               {
+                 break;
+               }
+
+            $p = Product::where('id',$t)->first();
+
+            $obj = new stdClass();
+
+            $obj->product = $p;
+            $obj->unitSold = $torders[$t];
+
+            $res[]=$obj;
+            $count++;
+         }
+
+
+
+
+
+
+        return json_encode($res);
     }
 
     public function create(Request $request){
@@ -27,11 +100,11 @@ class productController extends Controller
     public function save(Request $req){
 
         $validate = $req->validate([
-            'name'=>'required|min:4|max:100',
+            'name'=>'required',
             'unitPrice'=>'required',
-            'details'=>'required|min:5|max:15',
+            'details'=>'required',
             'quantity'=>'required',
-            'categoryId'=>'required'
+            'catagoryid'=>'required'
             
         ],
         [
@@ -43,12 +116,17 @@ class productController extends Controller
         $p->details=$req->details;
         $p->quantity=$req->quantity;
         $p->image=$req->image;
-        $p->catagoryId=$req->catagoryId;
+        $p->catagoryid=$req->catagoryid;
 
         $p->save();
 
       
-        return redirect()->route('product.index');
+        return $p;
+    }
+
+    public function get(Request $req){
+        $product = Product::where('id',$req->id)->first();
+        return $product;
     }
 
     public function details(Request $req){
@@ -87,12 +165,24 @@ class productController extends Controller
         ->with("total",$totalPrice);
     }
 
+     public function delete(Request $req){
+
+        $p = Product::where('id',$req->id)->first();
+        $p->delete();
+        return "deleted";
+
+
+
+    }
+
 
     public function search(Request $req){
 
-        $p = Product::where('name','like',"%{$req->src}%")->get();
+        $p = Product::where('name','like',"%{$req->q}%")->get();
         //echo $req->src;
-        return view('pages.Products.list')->with('products',$p);
+        return $p;
+
+
 
     }
 }

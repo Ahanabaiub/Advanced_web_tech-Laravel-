@@ -13,12 +13,15 @@ class customerController extends Controller
     public function index(){
 
         $c = Customer::all();
-        //echo $c[0]->user;
-        return view('pages.Customers.allcustomer')->with('customers',$c);
+        return $c;
         
-        // $u = Alluser::where('type','=','customer')->get();
-        // echo $u[0]->customer;
-        //return view('pages.Customers.allcustomer')->with('users',$u);
+    }
+
+     public function count(){
+
+        $c = Customer::all()->count();
+        return $c;
+        
     }
 
     public function create(){

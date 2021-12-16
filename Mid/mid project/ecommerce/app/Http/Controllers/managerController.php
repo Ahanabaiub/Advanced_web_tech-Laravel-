@@ -9,11 +9,19 @@ use App\Models\Alluser;
 class managerController extends Controller
 {
     //
-    public function index(){
+    public function getAll(){
 
         $c = Manager::all();
         
-        return view('pages.Managers.list')->with('managers',$c);
+        return $c;
+        
+    }
+
+     public function getAllCount(){
+
+        $c = Manager::all()->count();
+        
+        return $c;
         
     }
 
