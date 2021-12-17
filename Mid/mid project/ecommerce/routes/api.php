@@ -9,7 +9,7 @@ use App\Http\Controllers\customerController;
 use App\Http\Controllers\categoryController;
 use App\Http\Controllers\managerController;
 use App\Http\Controllers\orederController;
-use App\Http\Controllers\loginController;
+use App\Http\Controllers\apiLoginController;
 use App\Http\Controllers\deliveryManController;
 
 /*
@@ -30,49 +30,52 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 
-Route::get('/',[loginController::class, 'login'])->name('login');
-Route::post('/login',[loginController::class, 'loginSubmit'])->name('login.submit');
+//Route::get('/',[loginController::class, 'login'])->name('login');
+Route::post('/login',[apiLoginController::class, 'login']);
 
-Route::get('/logout',[loginController::class, 'logout'])->middleware('AdminAccess')->name('logout');
+Route::get('/uname/{id}',[apiLoginController::class, 'getuname'])->middleware('ApiAuth');
+
+
+Route::get('/logout',[apiloginController::class, 'logout'])->middleware('ApiAuth');
 
 
 Route::get('/Adminhome',[homeController::class, 'home'])->middleware('AdminAccess')->name('admin.home');
 
 ///...........Customer........
-Route::get('/customer/all',[customerController::class, 'index']);
-Route::get('/customer/allCount',[customerController::class, 'count']);
-Route::get('/customer/create',[customerController::class, 'create'])->middleware('AdminAccess')->name('customer.create');
-Route::post('/customer/save',[customerController::class, 'save'])->middleware('AdminAccess')->name('customer.save');
-Route::post('/customer/edit',[customerController::class, 'editSubmit']);
-Route::get('/customer/edit/{id}',[customerController::class, 'edit']);
-Route::get('/customer/delete/{id}',[customerController::class, 'delete']);
-Route::post('/customer/search',[customerController::class, 'search'])->middleware('AdminAccess')->name('customer.search');
-Route::get('/customer/history/{id}',[customerController::class, 'history'])->middleware('AdminAccess');
-Route::get('/customer/block/{id}',[customerController::class, 'block'])->middleware('AdminAccess');
+Route::get('/customer/all',[customerController::class, 'index'])->middleware('ApiAuth');
+Route::get('/customer/allCount',[customerController::class, 'count'])->middleware('ApiAuth');
+Route::get('/customer/create',[customerController::class, 'create'])->middleware('ApiAuth');
+Route::post('/customer/save',[customerController::class, 'save'])->middleware('ApiAuth');
+Route::post('/customer/edit',[customerController::class, 'editSubmit'])->middleware('ApiAuth');
+Route::get('/customer/edit/{id}',[customerController::class, 'edit'])->middleware('ApiAuth');
+Route::get('/customer/delete/{id}',[customerController::class, 'delete'])->middleware('ApiAuth');
+Route::post('/customer/search',[customerController::class, 'search'])->middleware('ApiAuth');
+Route::get('/customer/history/{id}',[customerController::class, 'history'])->middleware('ApiAuth');
+Route::get('/customer/block/{id}',[customerController::class, 'block'])->middleware('ApiAuth');
 
 
 
 
 //.........Category.......
-Route::get('/category/all',[categoryController::class,'index']);
-Route::get('/category/allCount',[categoryController::class,'count']);
-Route::get('/category/create',[categoryController::class,'create'])->middleware('AdminAccess')->name('category.create');
-Route::post('/category/save',[categoryController::class,'save'])->middleware('AdminAccess')->name('category.save');
-Route::get('/category/delete/{id}',[categoryController::class,'delete'])->middleware('AdminAccess')->middleware('AdminAccess')->name('category.delete');
-Route::get('/category/edit/{id}',[categoryController::class,'edit'])->middleware('AdminAccess')->name('category.edit');
-Route::post('/category/edit',[categoryController::class,'editsubmit'])->middleware('AdminAccess')->name('category.editsubmit');
+Route::get('/category/all',[categoryController::class,'index'])->middleware('ApiAuth');
+Route::get('/category/allCount',[categoryController::class,'count'])->middleware('ApiAuth');
+Route::get('/category/create',[categoryController::class,'create'])->middleware('ApiAuth');
+Route::post('/category/save',[categoryController::class,'save'])->middleware('ApiAuth');
+Route::get('/category/delete/{id}',[categoryController::class,'delete'])->middleware('ApiAuth');
+Route::get('/category/edit/{id}',[categoryController::class,'edit'])->middleware('ApiAuth');
+Route::post('/category/edit',[categoryController::class,'editsubmit'])->middleware('ApiAuth');
 
 
 ///...........Product.........
-Route::get('/product/all',[productController::class,'getAll']);
-Route::get('/product/countAll',[productController::class,'allCount']);
-Route::get('/product/get/{id}',[productController::class,'get']);
-Route::get('/product/create',[productController::class,'create']);
-Route::post('/product/save',[productController::class,'save']);
-Route::get('/product/order/{id}',[productController::class,'details']);
-Route::get('/product/top-sold',[productController::class,'topSold']);
-Route::get('/product/search',[productController::class,'search']);
-Route::delete('/product/delete/{id}',[productController::class,'delete']);
+Route::get('/product/all',[productController::class,'getAll'])->middleware('ApiAuth');
+Route::get('/product/countAll',[productController::class,'allCount'])->middleware('ApiAuth');
+Route::get('/product/get/{id}',[productController::class,'get'])->middleware('ApiAuth');
+Route::get('/product/create',[productController::class,'create'])->middleware('ApiAuth');
+Route::post('/product/save',[productController::class,'save'])->middleware('ApiAuth');
+Route::get('/product/order/{id}',[productController::class,'details'])->middleware('ApiAuth');
+Route::get('/product/top-sold',[productController::class,'topSold'])->middleware('ApiAuth');
+Route::get('/product/search',[productController::class,'search'])->middleware('ApiAuth');
+Route::delete('/product/delete/{id}',[productController::class,'delete'])->middleware('ApiAuth');
 
 Route::post('/product/test',[productController::class,'test']);
 
@@ -109,8 +112,8 @@ Route::get('/order/get-category-data',[orederController::class,'orderChat']);
 
 
 ///.....Reports.......
-Route::get('/report/get-mn-selles',[orederController::class,'getMonthlySellData']);
-Route::get('/report/get-yy-selles',[orederController::class,'getYearlySellData']);
+Route::get('/report/get-mn-selles',[orederController::class,'getMonthlySellData'])->middleware('ApiAuth');
+Route::get('/report/get-yy-selles',[orederController::class,'getYearlySellData'])->middleware('ApiAuth');
 
 
 
